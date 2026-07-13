@@ -26,7 +26,8 @@ public class ReportsEnginePanel extends JPanel {
     private TableRowSorter<DefaultTableModel> rowSorter;
     private JTextField searchField;
     private JComboBox<String> filterDropdown;
-    private JComboBox<String> orderSortDropdown; 
+    private JComboBox<String> orderSortDropdown;
+    private JButton btnResetMatrix; 
 
     private JPanel inspectorPanel;
     private JLabel lblGuestName, lblGuestId, lblGuestPhone, lblGuestEmail;
@@ -36,6 +37,7 @@ public class ReportsEnginePanel extends JPanel {
 
     private final Color DEEP_BLUE = new Color(20, 36, 65);
     private final Color BRIGHT_TEAL = new Color(0, 184, 148);
+    private final Color NEUTRAL_SLATE = new Color(148, 163, 184); 
     private final Color LIGHT_BG = new Color(245, 247, 250);
     private final Color BORDER_GRAY = new Color(226, 232, 240);
 
@@ -71,6 +73,15 @@ public class ReportsEnginePanel extends JPanel {
         btnPrintJasper.setBackground(BRIGHT_TEAL); btnPrintJasper.setForeground(Color.WHITE);
         btnPrintJasper.setFont(new Font("Segoe UI", Font.BOLD, 12));
         controlsRow.add(btnPrintJasper);
+
+        // --- ADDED: Styled and Initialized the Reset Button ---
+        btnResetMatrix = new JButton("Reset Matrix");
+        btnResetMatrix.setBackground(NEUTRAL_SLATE);
+        btnResetMatrix.setForeground(Color.WHITE);
+        btnResetMatrix.setFont(new Font("Segoe UI", Font.BOLD, 12));
+        btnResetMatrix.setFocusPainted(false);
+        btnResetMatrix.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        controlsRow.add(btnResetMatrix);
 
         topRibbon.add(controlsRow, BorderLayout.CENTER);
 
@@ -191,25 +202,30 @@ public class ReportsEnginePanel extends JPanel {
     }
 
     public void clearInspectorDeck() {
-        if (searchField != null) searchField.setText("");
-        if (filterDropdown != null) filterDropdown.setSelectedIndex(0);
-        if (orderSortDropdown != null) orderSortDropdown.setSelectedIndex(0); 
-        if (rowSorter != null) rowSorter.setRowFilter(null);
-        if (dataTable != null) dataTable.clearSelection();
+    if (searchField != null) searchField.setText("");
+    if (filterDropdown != null) filterDropdown.setSelectedIndex(0);
+    if (orderSortDropdown != null) orderSortDropdown.setSelectedIndex(0);
 
-        lblGuestName.setText("Full Legal Name: ---");
-        lblGuestId.setText("NIC / Passport Serial: ---");
-        lblGuestPhone.setText("Mobile Number: ---");
-        lblGuestEmail.setText("Email Address: ---");
-        lblRoomCategory.setText("Allocated Deck: ---");
-        lblStayDates.setText("Stay Interval: ---");
-        lblBaseTariff.setText("Base Net Subtotal: ---");
-        lblTaxComponent.setText("Operational Tax (10%): ---");
-        lblGrossTotal.setText("Gross Total Bill: ---");
-        lblStatusTag.setText("Settlement State: ---");
-        lblBalanceDue.setText("OUTSTANDING DUE: ---");
-        epPaymentHistory.setText("<html><body style='font-family:Segoe UI; font-size:11px; color:#64748b;'>Select a row entry to view tracking milestones.</body></html>");
+    if (rowSorter != null) {
+        rowSorter.setSortKeys(null); 
+        rowSorter.setRowFilter(null);
     }
+
+    if (dataTable != null) dataTable.clearSelection();
+
+    lblGuestName.setText("Full Legal Name: ---");
+    lblGuestId.setText("NIC / Passport Serial: ---");
+    lblGuestPhone.setText("Mobile Number: ---");
+    lblGuestEmail.setText("Email Address: ---");
+    lblRoomCategory.setText("Allocated Deck: ---");
+    lblStayDates.setText("Stay Interval: ---");
+    lblBaseTariff.setText("Base Net Subtotal: ---");
+    lblTaxComponent.setText("Operational Tax (10%): ---");
+    lblGrossTotal.setText("Gross Total Bill: ---");
+    lblStatusTag.setText("Settlement State: ---");
+    lblBalanceDue.setText("OUTSTANDING DUE: ---");
+    epPaymentHistory.setText("<html><body style='font-family:Segoe UI; font-size:11px; color:#64748b;'>Select a row entry to view tracking milestones.</body></html>");
+}
 
     private void setupRealtimeInteractions(JButton btnPrintJasper) {
         searchField.getDocument().addDocumentListener(new DocumentListener() {
@@ -221,6 +237,14 @@ public class ReportsEnginePanel extends JPanel {
         filterDropdown.addActionListener(e -> applyRealtimeFilteringMatrix());
 
         orderSortDropdown.addActionListener(e -> loadLiveDatabaseRecords());
+
+        btnResetMatrix.addActionListener(e -> {
+            clearInspectorDeck();
+            loadLiveDatabaseRecords();
+            JOptionPane.showMessageDialog(this,
+                    "All analytics workspace states and filters have been successfully reset.",
+                    "Workspace Refreshed", JOptionPane.INFORMATION_MESSAGE);
+        });
 
         dataTable.getSelectionModel().addListSelectionListener(e -> {
             if (!e.getValueIsAdjusting() && dataTable.getSelectedRow() != -1) {
@@ -417,9 +441,9 @@ public class ReportsEnginePanel extends JPanel {
             tableModel.setRowCount(0);
             Connection conn = DBConnection.getInstance().getConnection();
 
-            String sortDirection = "DESC"; 
+            String sortDirection = "DESC";
             if (orderSortDropdown != null && orderSortDropdown.getSelectedIndex() == 1) {
-                sortDirection = "ASC"; 
+                sortDirection = "ASC";
             }
 
             String query = "SELECT b.booking_id, g.full_name, a.room_id, a.room_type, b.check_in_date, b.check_out_date, b.final_amount, b.billing_currency, b.payment_status, b.outstanding_balance " +
@@ -449,3 +473,4 @@ public class ReportsEnginePanel extends JPanel {
         }
     }
 }
+
