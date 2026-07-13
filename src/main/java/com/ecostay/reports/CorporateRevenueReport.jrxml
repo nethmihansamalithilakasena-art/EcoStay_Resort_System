@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CorporateRevenueReport" pageWidth="842" pageHeight="595" orientation="Landscape" columnWidth="802" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20">
+        <queryString>
+                <![CDATA[SELECT b.booking_id, g.full_name, a.room_id, a.room_type, b.check_in_date, b.check_out_date, b.final_amount, b.billing_currency, b.payment_status, b.outstanding_balance FROM tbl_bookings b INNER JOIN tbl_guests g ON b.guest_id = g.guest_id INNER JOIN tbl_accommodation a ON b.room_id = a.room_id]]>
+        </queryString>
+        <field name="booking_id" class="java.lang.Integer"/>
+        <field name="full_name" class="java.lang.String"/>
+        <field name="room_id" class="java.lang.Integer"/>
+        <field name="room_type" class="java.lang.String"/>
+        <field name="check_in_date" class="java.sql.Date"/>
+        <field name="check_out_date" class="java.sql.Date"/>
+        <field name="final_amount" class="java.lang.Double"/>
+        <field name="billing_currency" class="java.lang.String"/>
+        <field name="payment_status" class="java.lang.String"/>
+        <field name="outstanding_balance" class="java.lang.Double"/>
+        <title>
+                <band height="70">
+                        <staticText>
+                                <reportElement x="0" y="10" width="802" height="40"/>
+                                <textElement textAlignment="Center" verticalAlignment="Middle">
+                                        <font fontName="Segoe UI" size="24" isBold="true"/>
+                                </textElement>
+                                <text><![CDATA[EcoStay Resorts - Master Booking & Audited Financial Registry]]></text>
+                        </staticText>
+                </band>
+        </title>
+        <columnHeader>
+                <band height="30">
+                        <staticText>
+                                <reportElement x="0" y="5" width="60" height="20"/>
+                                <textElement><font fontName="Segoe UI" size="10" isBold="true"/></textElement>
+                                <text><![CDATA[Booking ID]]></text>
+                        </staticText>
+                        <staticText>
+                                <reportElement x="70" y="5" width="130" height="20"/>
+                                <textElement><font fontName="Segoe UI" size="10" isBold="true"/></textElement>
+                                <text><![CDATA[Guest Full Name]]></text>
+                        </staticText>
+                        <staticText>
+                                <reportElement x="210" y="5" width="140" height="20"/>
+                                <textElement><font fontName="Segoe UI" size="10" isBold="true"/></textElement>
+                                <text><![CDATA[Allocated Category]]></text>
+                        </staticText>
+                        <staticText>
+                                <reportElement x="360" y="5" width="80" height="20"/>
+                                <textElement textAlignment="Center"><font fontName="Segoe UI" size="10" isBold="true"/></textElement>
+                                <text><![CDATA[Check-In]]></text>
+                        </staticText>
+                        <staticText>
+                                <reportElement x="450" y="5" width="80" height="20"/>
+                                <textElement textAlignment="Center"><font fontName="Segoe UI" size="10" isBold="true"/></textElement>
+                                <text><![CDATA[Check-Out]]></text>
+                        </staticText>
+                        <staticText>
+                                <reportElement x="540" y="5" width="80" height="20"/>
+                                <textElement textAlignment="Right"><font fontName="Segoe UI" size="10" isBold="true"/></textElement>
+                                <text><![CDATA[Gross Invoice]]></text>
+                        </staticText>
+                        <staticText>
+                                <reportElement x="630" y="5" width="90" height="20"/>
+                                <textElement textAlignment="Center"><font fontName="Segoe UI" size="10" isBold="true"/></textElement>
+                                <text><![CDATA[Payment Status]]></text>
+                        </staticText>
+                        <staticText>
+                                <reportElement x="730" y="5" width="70" height="20"/>
+                                <textElement textAlignment="Right"><font fontName="Segoe UI" size="10" isBold="true"/></textElement>
+                                <text><![CDATA[Balance Due]]></text>
+                        </staticText>
+                </band>
+        </columnHeader>
+        <detail>
+                <band height="30">
+                        <textField>
+                                <reportElement x="0" y="5" width="60" height="20"/>
+                                <textElement><font fontName="Segoe UI" size="9"/></textElement>
+                                <textFieldExpression><![CDATA["BKG-" + $F{booking_id}]]></textFieldExpression>
+                        </textField>
+                        <textField>
+                                <reportElement x="70" y="5" width="130" height="20"/>
+                                <textElement><font fontName="Segoe UI" size="9"/></textElement>
+                                <textFieldExpression><![CDATA[$F{full_name}]]></textFieldExpression>
+                        </textField>
+                        <textField>
+                                <reportElement x="210" y="5" width="140" height="20"/>
+                                <textElement><font fontName="Segoe UI" size="9"/></textElement>
+                                <textFieldExpression><![CDATA[$F{room_type}]]></textFieldExpression>
+                        </textField>
+                        <textField pattern="yyyy-MM-dd">
+                                <reportElement x="360" y="5" width="80" height="20"/>
+                                <textElement textAlignment="Center"><font fontName="Segoe UI" size="9"/></textElement>
+                                <textFieldExpression><![CDATA[$F{check_in_date}]]></textFieldExpression>
+                        </textField>
+                        <textField pattern="yyyy-MM-dd">
+                                <reportElement x="450" y="5" width="80" height="20"/>
+                                <textElement textAlignment="Center"><font fontName="Segoe UI" size="9"/></textElement>
+                                <textFieldExpression><![CDATA[$F{check_out_date}]]></textFieldExpression>
+                        </textField>
+                        <textField pattern="#,##0.00">
+                                <reportElement x="540" y="5" width="80" height="20"/>
+                                <textElement textAlignment="Right"><font fontName="Segoe UI" size="9"/></textElement>
+                                <textFieldExpression><![CDATA[$F{billing_currency} + " " + $F{final_amount}]]></textFieldExpression>
+                        </textField>
+                        <textField>
+                                <reportElement x="630" y="5" width="90" height="20"/>
+                                <textElement textAlignment="Center"><font fontName="Segoe UI" size="9"/></textElement>
+                                <textFieldExpression><![CDATA[$F{payment_status}]]></textFieldExpression>
+                        </textField>
+                        <textField pattern="#,##0.00">
+                                <reportElement x="730" y="5" width="70" height="20"/>
+                                <textElement textAlignment="Right"><font fontName="Segoe UI" size="9"/></textElement>
+                                <textFieldExpression><![CDATA[$F{billing_currency} + " " + $F{outstanding_balance}]]></textFieldExpression>
+                        </textField>
+                </band>
+        </detail>
+</jasperReport>
