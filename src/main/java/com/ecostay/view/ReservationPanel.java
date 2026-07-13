@@ -37,7 +37,6 @@ public class ReservationPanel extends JPanel {
         mainConstraints.weighty = 1.0;
         mainConstraints.insets = new Insets(0, 10, 0, 10);
 
-        // --- LEFT SIDE: Centered Customer Form Block (Fixed Width) ---
         JPanel leftOuterWrapper = new JPanel(new GridBagLayout());
         leftOuterWrapper.setOpaque(false);
 
@@ -114,7 +113,6 @@ public class ReservationPanel extends JPanel {
         mainConstraints.gridx = 0;
         add(leftOuterWrapper, mainConstraints);
 
-        // --- RIGHT SIDE: Selection Cards Configuration Panel ---
         JPanel rightSelectionCard = new JPanel();
         rightSelectionCard.setLayout(new BoxLayout(rightSelectionCard, BoxLayout.Y_AXIS));
         rightSelectionCard.setOpaque(false);

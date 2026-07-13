@@ -26,17 +26,13 @@ public class LoginPanel extends JPanel {
         setLayout(new BorderLayout());
         setBackground(Color.WHITE);
 
-        // --- 1. LEFT SIDE: Premium Image Background Hero Panel ---
-        // Generates a custom panel that reads the resource graphic stream and auto-scales it smoothly
         JPanel leftBrandingPanel = new JPanel() {
             private Image backgroundImage = null;
 
             {
                 try {
-                    // Pull resource stream directly alongside class path parameters safely
                     InputStream is = getClass().getResourceAsStream("/com/ecostay/view/login_hero.jpg");
                     if (is == null) {
-                        // Fallback check if the leading slash structure differs in compiled jars
                         is = getClass().getResourceAsStream("login_hero.jpg");
                     }
                     if (is != null) {
@@ -54,7 +50,6 @@ public class LoginPanel extends JPanel {
                 g2d.setRenderingHint(RenderingHints.KEY_INTERPOLATION, RenderingHints.VALUE_INTERPOLATION_BILINEAR);
 
                 if (backgroundImage != null) {
-                    // Compute scaling layout mechanics to make sure image fills the panel surface
                     int imgWidth = backgroundImage.getWidth(this);
                     int imgHeight = backgroundImage.getHeight(this);
 
@@ -68,18 +63,15 @@ public class LoginPanel extends JPanel {
 
                     g2d.drawImage(backgroundImage, x, y, drawWidth, drawHeight, this);
 
-                    // High-end Dark Glass Overlay Layer to keep text completely readable
                     g2d.setColor(new Color(15, 23, 42, 175));
                     g2d.fillRect(0, 0, getWidth(), getHeight());
                 } else {
-                    // Fallback to solid deep corporate blue tone if file isn't loaded yet
                     g2d.setPaint(new GradientPaint(0, 0, new Color(24, 43, 73), getWidth(), getHeight(), new Color(12, 22, 40)));
                     g2d.fillRect(0, 0, getWidth(), getHeight());
                 }
             }
         };
 
-        // Dynamic scaling configuration: widening footprint slightly to make image area more prominent
         leftBrandingPanel.setPreferredSize(new Dimension(460, 0));
         leftBrandingPanel.setLayout(new GridBagLayout());
 
@@ -100,7 +92,6 @@ public class LoginPanel extends JPanel {
         gbcLeft.gridy = 1; leftBrandingPanel.add(lblBrandSub, gbcLeft);
         add(leftBrandingPanel, BorderLayout.WEST);
 
-        // --- 2. RIGHT SIDE: Center-Anchored Fixed Form Panel Framework ---
         JPanel formOuterWrapper = new JPanel(new GridBagLayout());
         formOuterWrapper.setBackground(new Color(248, 250, 252));
 

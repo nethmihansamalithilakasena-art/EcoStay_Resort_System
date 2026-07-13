@@ -13,7 +13,7 @@ public class SystemController {
         LocalDate checkIn = LocalDate.parse(inStr);
         LocalDate checkOut = LocalDate.parse(outStr);
 
-        // Coursework Validation Criteria check
+        
         if (!checkOut.isAfter(checkIn)) {
             throw new InvalidBookingException("Validation Failure: Checkout timeline cannot precede checkin date.");
         }
@@ -21,10 +21,10 @@ public class SystemController {
         long days = ChronoUnit.DAYS.between(checkIn, checkOut);
         Connection conn = DBConnection.getInstance().getConnection();
         
-        // Open safe transaction framework state
+       
         conn.setAutoCommit(false);
         try {
-            // 1. Insert Guest and capture dynamic index identity
+            
             String guestSQL = "INSERT INTO tbl_guests (full_name, nationality_type, identity_number, phone_number, email_address) VALUES (?, ?, ?, ?, ?)";
             PreparedStatement psG = conn.prepareStatement(guestSQL, Statement.RETURN_GENERATED_KEYS);
             psG.setString(1, guest.getFullName());
@@ -38,7 +38,7 @@ public class SystemController {
             int guestId = 0;
             if (rsG.next()) guestId = rsG.getInt(1);
 
-            // 2. Fetch Accommodation metadata parameters
+            
             String roomSQL = "SELECT room_id, base_rate_usd, base_rate_lkr FROM tbl_accommodation WHERE room_type = ? LIMIT 1";
             PreparedStatement psR = conn.prepareStatement(roomSQL);
             psR.setString(1, roomType);
@@ -65,7 +65,7 @@ public class SystemController {
             double taxComponent = initialCost * 0.08; 
             double finalInvoiceCost = initialCost + taxComponent;
 
-            // 3. Write Core Relational Transaction Entry
+           
             String bookingSQL = "INSERT INTO tbl_bookings (guest_id, room_id, check_in_date, check_out_date, billing_currency, tax_amount, final_amount) VALUES (?, ?, ?, ?, ?, ?, ?)";
             PreparedStatement psB = conn.prepareStatement(bookingSQL);
             psB.setInt(1, guestId);
@@ -77,7 +77,7 @@ public class SystemController {
             psB.setDouble(7, finalInvoiceCost);
             psB.executeUpdate();
 
-            // Commit complete operation pipeline safely
+            
             conn.commit();
         } catch (Exception ex) {
             conn.rollback();
@@ -90,7 +90,7 @@ public class SystemController {
     java.util.Vector<java.util.Vector<Object>> manifest = new java.util.Vector<>();
     Connection conn = com.ecostay.util.DBConnection.getInstance().getConnection();
     
-    // Join statement grouping demographic data models with transaction logs
+    
     String query = "SELECT b.booking_id, g.full_name, g.nationality_type, a.room_type, " +
                    "CONCAT(b.final_amount, ' ', b.billing_currency) AS gross_total " +
                    "FROM tbl_bookings b " +

@@ -11,7 +11,6 @@ com\ecostay\view\ReportsEnginePanel$3.class
 com\ecostay\view\OverviewDashboardPanel$1.class
 com\ecostay\controller\BookingController.class
 com\ecostay\view\OverviewDashboardPanel$2.class
-com\ecostay\view\ReservationDeskPanel.class
 com\ecostay\view\ReportsEnginePanel$1.class
 com\ecostay\view\DashboardFrame$1.class
 com\ecostay\view\DashboardFrame.class

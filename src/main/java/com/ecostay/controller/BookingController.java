@@ -24,7 +24,6 @@ public class BookingController {
         long nights = ChronoUnit.DAYS.between(checkIn, checkOut);
         Connection conn = DBConnection.getInstance().getConnection();
 
-        // Begin ACiD Transaction Block for full relational integrity
         conn.setAutoCommit(false);
         try {
             
@@ -66,7 +65,7 @@ public class BookingController {
             }
 
             double subTotal = baseRate * nights;
-            double tax = subTotal * 0.08; // 8% Regional SSCL/VAT matrix calculation
+            double tax = subTotal * 0.08; 
             double total = subTotal + tax;
 
            
@@ -81,7 +80,7 @@ public class BookingController {
             psBook.setDouble(7, total);
             psBook.executeUpdate();
 
-            conn.commit(); // Finalize save event pipeline
+            conn.commit(); 
         } catch (Exception e) {
             conn.rollback();
             throw e;

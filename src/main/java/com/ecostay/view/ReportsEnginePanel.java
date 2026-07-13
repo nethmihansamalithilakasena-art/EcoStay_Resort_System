@@ -26,7 +26,7 @@ public class ReportsEnginePanel extends JPanel {
     private TableRowSorter<DefaultTableModel> rowSorter;
     private JTextField searchField;
     private JComboBox<String> filterDropdown;
-    private JComboBox<String> orderSortDropdown; // Dynamic chronological order toggle controller
+    private JComboBox<String> orderSortDropdown; 
 
     private JPanel inspectorPanel;
     private JLabel lblGuestName, lblGuestId, lblGuestPhone, lblGuestEmail;
@@ -63,7 +63,6 @@ public class ReportsEnginePanel extends JPanel {
         filterDropdown = new JComboBox<>(new String[]{"All Categories", "Treehouse", "Safari Dome", "Eco Lodge"});
         controlsRow.add(filterDropdown);
 
-        // --- ADDED: Dynamic Chronological Sorting Toggle Controller ---
         controlsRow.add(new JLabel("Order Sequence:"));
         orderSortDropdown = new JComboBox<>(new String[]{"Latest Reservations First", "Oldest Reservations First"});
         controlsRow.add(orderSortDropdown);
@@ -194,7 +193,7 @@ public class ReportsEnginePanel extends JPanel {
     public void clearInspectorDeck() {
         if (searchField != null) searchField.setText("");
         if (filterDropdown != null) filterDropdown.setSelectedIndex(0);
-        if (orderSortDropdown != null) orderSortDropdown.setSelectedIndex(0); // Reset dropdown matrix index
+        if (orderSortDropdown != null) orderSortDropdown.setSelectedIndex(0); 
         if (rowSorter != null) rowSorter.setRowFilter(null);
         if (dataTable != null) dataTable.clearSelection();
 
@@ -221,7 +220,6 @@ public class ReportsEnginePanel extends JPanel {
 
         filterDropdown.addActionListener(e -> applyRealtimeFilteringMatrix());
 
-        // --- ADDED: Re-trigger SQL data loading block whenever the sorting dropdown state flips ---
         orderSortDropdown.addActionListener(e -> loadLiveDatabaseRecords());
 
         dataTable.getSelectionModel().addListSelectionListener(e -> {
@@ -419,10 +417,9 @@ public class ReportsEnginePanel extends JPanel {
             tableModel.setRowCount(0);
             Connection conn = DBConnection.getInstance().getConnection();
 
-            // --- UPDATED: Dynamic Chronological Sort Appender Rule Layer ---
-            String sortDirection = "DESC"; // Default state: Newest reservations at the very top
+            String sortDirection = "DESC"; 
             if (orderSortDropdown != null && orderSortDropdown.getSelectedIndex() == 1) {
-                sortDirection = "ASC"; // Oldest reservations at the top
+                sortDirection = "ASC"; 
             }
 
             String query = "SELECT b.booking_id, g.full_name, a.room_id, a.room_type, b.check_in_date, b.check_out_date, b.final_amount, b.billing_currency, b.payment_status, b.outstanding_balance " +

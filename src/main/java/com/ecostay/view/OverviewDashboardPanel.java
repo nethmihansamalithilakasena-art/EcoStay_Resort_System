@@ -18,7 +18,6 @@ public class OverviewDashboardPanel extends JPanel {
         setBackground(new Color(240, 244, 248));
         setBorder(new EmptyBorder(10, 10, 10, 10));
 
-        // 1. Top Row Card Deck
         JPanel cardGrid = new JPanel(new GridLayout(1, 4, 20, 0));
         cardGrid.setBackground(getBackground());
         cardGrid.add(createModernTravelCard("RESERVATION VOLUME", "148 Active", "↗ +12% Compounded", new Color(9, 132, 227)));
@@ -27,7 +26,6 @@ public class OverviewDashboardPanel extends JPanel {
         cardGrid.add(createModernTravelCard("INFRASTRUCTURE CAPACITY", "89.4% Full", "⚠️ 3 Dwellings Offline", new Color(225, 112, 85)));
         add(cardGrid, BorderLayout.NORTH);
 
-        // 2. Center Data Grid Container Card
         JPanel gridWrapper = new JPanel(new BorderLayout());
         gridWrapper.setBackground(WHITE_PANEL);
         gridWrapper.setBorder(BorderFactory.createCompoundBorder(
@@ -41,7 +39,6 @@ public class OverviewDashboardPanel extends JPanel {
         lblSecTitle.setBorder(new EmptyBorder(0, 0, 15, 0));
         gridWrapper.add(lblSecTitle, BorderLayout.NORTH);
 
-        // Configure JTable Data Structure
         String[] headers = {"Timestamp Log", "Event Context", "Authorized Operator Role", "Execution Status"};
         DefaultTableModel model = new DefaultTableModel(headers, 0) {
             @Override
@@ -52,14 +49,14 @@ public class OverviewDashboardPanel extends JPanel {
         model.addRow(new Object[]{"19:30:45", "Jasper Multi-Table Revenue Summary Compiled", "Management Admin", "VERIFIED"});
 
         JTable table = new JTable(model);
-        table.setRowHeight(40); // Generous padding for rows
+        table.setRowHeight(40);
         table.setFont(new Font("Segoe UI", Font.PLAIN, 13));
         table.setForeground(TEXT_DARK);
         table.setShowVerticalLines(false);
         table.setGridColor(new Color(241, 245, 249));
         table.setSelectionBackground(new Color(240, 247, 255));
 
-        // Format Header Component
+        
         JTableHeader th = table.getTableHeader();
         th.setFont(new Font("Segoe UI", Font.BOLD, 13));
         th.setBackground(new Color(248, 250, 252));
@@ -67,14 +64,13 @@ public class OverviewDashboardPanel extends JPanel {
         th.setPreferredSize(new Dimension(0, 42));
         ((DefaultTableCellRenderer)th.getDefaultRenderer()).setHorizontalAlignment(JLabel.LEFT);
 
-        // Custom Highlight Cell Status Badge Renderer logic
         table.getColumnModel().getColumn(3).setCellRenderer(new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable t, Object v, boolean isS, boolean hasF, int r, int c) {
                 JLabel lbl = (JLabel) super.getTableCellRendererComponent(t, v, isS, hasF, r, c);
                 lbl.setFont(new Font("Segoe UI", Font.BOLD, 12));
                 lbl.setHorizontalAlignment(JLabel.CENTER);
-                lbl.setForeground(new Color(0, 184, 148)); // Clean Modern Green
+                lbl.setForeground(new Color(0, 184, 148)); 
                 return lbl;
             }
         });
