@@ -195,9 +195,23 @@ public class ReservationPanel extends JPanel {
         LocalDate checkIn = checkInPicker.getDate();
         LocalDate checkOut = checkOutPicker.getDate();
 
-        if (guestName.isEmpty() || identity.isEmpty() || checkIn == null || checkOut == null) {
+        // Standard Empty Field Validation Check
+        if (guestName.isEmpty() || identity.isEmpty() || contact.isEmpty() || email.isEmpty() || checkIn == null || checkOut == null) {
             JOptionPane.showMessageDialog(this, "Validation Failure: All field metrics required.", "Form Interruption", JOptionPane.WARNING_MESSAGE);
             return;
+        }
+
+        // --- SPECIFIC USER REQUIREMENT 1: EMAIL REGISTRATION VALIDATION ---
+        if (!email.toLowerCase().endsWith("@gmail.com")) {
+            JOptionPane.showMessageDialog(this, "Registration Stopped: The entered email is not valid. It must end with @gmail.com to continue.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return; // Completely stops the process right here
+        }
+
+        // --- SPECIFIC USER REQUIREMENT 2: CURRENT DATE PROTECTION VALIDATION ---
+        LocalDate todayDate = LocalDate.now();
+        if (checkIn.isBefore(todayDate)) {
+            JOptionPane.showMessageDialog(this, "Registration Stopped: The checking date is not valid. The check-in date cannot be a previous date.", "Validation Error", JOptionPane.ERROR_MESSAGE);
+            return; // Completely stops the process right here
         }
 
         long daysBetween = ChronoUnit.DAYS.between(checkIn, checkOut);
@@ -331,5 +345,3 @@ public class ReservationPanel extends JPanel {
         checkInPicker.setDate(LocalDate.now()); checkOutPicker.setDate(LocalDate.now());
     }
 }
-
-
